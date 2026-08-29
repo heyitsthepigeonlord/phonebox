@@ -1,71 +1,38 @@
 ﻿#EXTM3U
-# Group: Rock, Indie, Alternative, Country & Folk
-# Homepage: https://acecafe.com/ace-cafe-radio/
-#EXTINF:-1,Ace Cafe Radio
-https://listen.radioking.com/radio/69079/stream/106852
-# Homepage: https://www.bagelradio.com/
-#EXTINF:-1,BAGeL Radio
-http://ais-sa3.cdnstream1.com/2606_128.aac
-# Homepage: https://www.bbc.co.uk/sounds/play/live/bbc_6music
-#EXTINF:-1,BBC Radio 6 Music
-http://as-hls-ww-live.akamaized.net/pool_81827798/live/ww/bbc_6music/bbc_6music.isml/bbc_6music-audio%3d320000.norewind.m3u8
-# Homepage: https://birchstreetradio.com/
-#EXTINF:-1,Birch Street Radio
-https://streaming.live365.com/a97155
-# Homepage: https://www.boogalooradio.com/
-#EXTINF:-1,Boogaloo Radio
-https://streams.radio.co/sb88c742f0/listen
-# Homepage: https://thecurrent.org
-#EXTINF:-1,The Current
-https://current.stream.publicradio.org/current.mp3
-# Homepage: https://wdarefm.com/
-#EXTINF:-1,DARE FM
-http://hydra.cdnstream.com/1552_128
-# Homepage: http://www.deliciousagony.com/
-#EXTINF:-1,Delicious Agony
-http://deliciousagony.streamguys1.com/
-# Homepage: https://folkalley.com/
-#EXTINF:-1,Folk Alley
-https://freshgrass.streamguys1.com/folkalley-128mp3
-# Homepage: https://www.gdradio.net/
-#EXTINF:-1,Grateful Dead Radio
-http://cassini.shoutca.st:8574/stream
-# Homepage: https://ignoreradio.com/
-#EXTINF:-1,Ignore Radio Shoegaze
-https://sp1.autopo.st/8026/stream
-# Homepage: https://www.kexp.org/listen/
-#EXTINF:-1,KEXP 90.3
-https://kexp.streamguys1.com/kexp160.aac
-# Homepage: https://krautrockworld.com/
-#EXTINF:-1,Krautrock-World
-https://krautrockworld.stream.laut.fm/krautrockworld
-# Homepage: https://livejamradio.com/
-#EXTINF:-1,Live Jam Radio
-https://stations.radio-host.com/proxy/livejam/stream
-# Homepage: https://www.morow.com/
-#EXTINF:-1,Morow
-https://www.morow.com/morow.pls
-# Homepage: https://www.nts.live/infinite-mixtapes/memory-lane
-#EXTINF:-1,NTS - Memory Lane
-https://stream-mixtape-geo.ntslive.net/mixtape6
-# Homepage: https://www.nts.live/infinite-mixtapes/the-tube
-#EXTINF:-1,NTS - The Tube
-https://stream-mixtape-geo.ntslive.net/mixtape26
-# Homepage: https://www.nugs.net/
-#EXTINF:-1,Nugs Radio
-https://radio.nugs.net/nugsnet
-# Homepage: https://radioparadise.com/
-#EXTINF:-1,Radio Paradise
-http://stream-dc1.radioparadise.com/rp_192m.ogg
-# Homepage: https://radiowoodstock.com/
-#EXTINF:-1,Radio Woodstock
-https://stream.revma.ihrhls.com/zc7332
-# Homepage: https://realpunkradio.com/
-#EXTINF:-1,Real Punk Radio
-http://149.56.155.73:8080/stream
-# Homepage: https://thesocalsound.org/
-#EXTINF:-1,The SoCal Sound
-https://stream.thesocalsound.org/1
-# Homepage: https://yachtrockmiami.com/
-#EXTINF:-1,Yacht Rock Miami
-https://usa20.fastcast4u.com:4100
+# Group: Experimental, Nerdy & Scanners
+# Homepage: https://driftconditions.org/
+#EXTINF:-1,DriftConditions
+https://usa14.fastcast4u.com/proxy/wmodes?mp=/1
+# Homepage: https://bestairadio.com/
+#EXTINF:-1,The Frequency
+https://stream.bestairadio.com/live
+# Homepage: https://mechanicalmusicradio.com
+#EXTINF:-1,Mechanical Music Radio
+https://global.citrus3.com:2020/stream/mechanicalmusicradio
+# Homepage: https://p-node.org
+#EXTINF:-1,P-Node
+http://stream.p-node.org/dab.mp3
+# Homepage: https://www.payphone-project.com/payphone-radio-network
+#EXTINF:-1,Payphone Radio
+https://centova11.instainternet.com/proxy/marktho1?mp=/stream
+# Homepage: https://radiobrennpunkt.org/
+#EXTINF:-1,Radio Brennpunkt
+https://radio-brennpunkt.radiocult.fm/stream
+# Homepage: https://www.radioisaforeigncountry.org/
+#EXTINF:-1,Radio is a Foreign Country
+https://s5.radio.co/s20251311a/listen
+# Homepage: https://radiopaisajes.cl/
+#EXTINF:-1,Radio Paisajes
+https://stream.zeno.fm/nftv61u086etv
+# Homepage: https://compound-eye.org
+#EXTINF:-1,Shirley & Spinoza
+https://s2.radio.co/sec5fa6199/listen
+# Homepage: https://zeno.fm/radio/SpinningSeal/
+#EXTINF:-1,Spinning Seal FM
+https://stream.zeno.fm/9q3ez3k3fchvv
+# Homepage: https://tilderadio.org/
+#EXTINF:-1,TildeRadio
+https://azuracast.tilderadio.org/radio/8000/radio.mp3
+# Homepage: https://wavefarm.org/
+#EXTINF:-1,Wave Farm
+https://audio.wavefarm.org/pondstation.mp3
