@@ -3,226 +3,163 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>British Telephone Box Radio</title>
+    <title>Interactive Phonebox Radio</title>
     <style>
         body {
             margin: 0;
             padding: 0;
-            background-color: #2c3e50;
+            background-color: #000;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            font-family: 'Courier New', Courier, monospace;
             overflow: hidden;
-            color: white;
+            font-family: sans-serif;
         }
 
-        /* 3D Scene setup */
-        #scene {
-            perspective: 1200px;
-        }
-
-        /* The Phone Box */
-        #phone-box {
+        #phonebox-container {
             position: relative;
-            width: 260px;
-            height: 550px;
-            background: #a00000;
-            border: 10px solid #cc0000;
-            border-radius: 10px 10px 0 0;
-            box-shadow: 10px 10px 30px rgba(0,0,0,0.7), inset 0 0 50px rgba(0,0,0,0.5);
-            transform-style: preserve-3d;
+            height: 100vh;
+            display: none; /* Hidden until Start is clicked */
         }
 
-        /* The Telephone Sign */
-        .sign {
-            background: rgba(255, 255, 255, 0.9);
-            color: black;
-            text-align: center;
-            font-weight: bold;
-            font-family: Arial, sans-serif;
-            letter-spacing: 3px;
-            padding: 10px 0;
-            margin: 10px;
-            border: 1px solid #333;
+        #phonebox-bg {
+            height: 100%;
+            width: auto;
+            display: block;
         }
 
-        /* Inside the box (Back Wall) */
-        .interior {
+        /* Clickable area mapped over the handset */
+        #handset-hotspot {
             position: absolute;
-            top: 60px;
-            left: 10px;
-            right: 10px;
-            bottom: 10px;
-            background: #555;
+            left: 5%;
+            top: 59%;
+            width: 14%;
+            height: 25%;
+            cursor: pointer;
+            border-radius: 10px;
+            /* Uncomment the line below to see the clickable area during testing */
+            /* background-color: rgba(0, 255, 0, 0.3); */ 
+        }
+
+        #start-screen {
+            position: absolute;
+            z-index: 10;
+            background: rgba(0, 0, 0, 0.8);
+            width: 100%;
+            height: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: inset 0 0 30px black;
         }
 
-        /* The Clickable Telephone */
-        #telephone {
-            font-size: 80px;
+        button {
+            padding: 15px 40px;
+            font-size: 24px;
             cursor: pointer;
-            transition: transform 0.2s;
-            text-shadow: 2px 2px 5px black;
+            background-color: #d60000;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.5);
+            transition: transform 0.1s;
         }
 
-        #telephone:hover {
-            transform: scale(1.1) rotate(-5deg);
-        }
-
-        /* The Door */
-        #door {
-            position: absolute;
-            top: 60px;
-            left: 10px;
-            width: calc(100% - 20px);
-            height: calc(100% - 70px);
-            background: #cc0000;
-            transform-origin: left;
-            transition: transform 2s ease-in-out;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            grid-template-rows: repeat(8, 1fr);
-            gap: 5px;
-            padding: 5px;
-            box-sizing: border-box;
-            border: 2px solid #800000;
-        }
-
-        /* Door opening animation */
-        #door.open {
-            transform: rotateY(-105deg);
-        }
-
-        /* Glass Panes on the door */
-        .pane {
-            background: rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(0,0,0,0.3);
-            box-shadow: inset 2px 2px 5px rgba(255,255,255,0.1);
-        }
-
-        /* Now Playing UI */
-        #now-playing {
-            position: absolute;
-            bottom: 30px;
-            font-size: 20px;
-            background: rgba(0,0,0,0.7);
-            padding: 10px 20px;
-            border-radius: 5px;
-            display: none;
-            z-index: 10;
+        button:active {
+            transform: scale(0.95);
         }
     </style>
 </head>
 <body>
 
-    <!-- 3D Phone Box -->
-    <div id="scene">
-        <div id="phone-box">
-            <div class="sign">TELEPHONE</div>
-            
-            <div class="interior">
-                <div id="telephone" title="Answer the phone">☎️</div>
-            </div>
-            
-            <div id="door">
-                <!-- Panes generated by JS -->
-            </div>
-        </div>
+    <!-- Start Overlay (Required to allow browser audio playback) -->
+    <div id="start-screen">
+        <button id="start-btn">START</button>
     </div>
 
-    <div id="now-playing">Now Playing: ...</div>
+    <!-- Main Interactive Area -->
+    <div id="phonebox-container">
+        <img id="phonebox-bg" src="phonebox.jpg" alt="Telephone Box">
+        <div id="handset-hotspot" title="Pick up handset"></div>
+    </div>
 
     <script>
-        let stationsList = [];
+        // File references
+        const PLAYLIST_FILE = 'playlist.m3u'; 
+        const RINGTONE_FILE = 'ringtone.mp3'; // Replace with your ringing sound file
 
-        // 1. Generate Door Panes
-        const door = document.getElementById('door');
-        for(let i=0; i<24; i++) {
-            let pane = document.createElement('div');
-            pane.className = 'pane';
-            door.appendChild(pane);
-        }
+        // Audio Objects
+        const ringAudio = new Audio(RINGTONE_FILE);
+        ringAudio.loop = true;
+        const stationAudio = new Audio();
 
-        // 2. Audio Setup
-        // Using a royalty-free old telephone ring sound
-        const ringSound = new Audio('https://actions.google.com/sounds/v1/alarms/phone_ringing.ogg');
-        ringSound.loop = true; 
-        const radioStream = new Audio();
+        // DOM Elements
+        const startBtn = document.getElementById('start-btn');
+        const startScreen = document.getElementById('start-screen');
+        const phoneboxContainer = document.getElementById('phonebox-container');
+        const handset = document.getElementById('handset-hotspot');
 
-        // 3. M3U Parser Function
-        function parseM3U(data) {
-            const lines = data.split('\\n');
-            const stations = [];
-            let currentName = "Unknown Station";
+        let isRinging = false;
+        let stationUrls = [];
+
+        // 1. User clicks start -> Start ringing and show image
+        startBtn.addEventListener('click', () => {
+            startScreen.style.display = 'none';
+            phoneboxContainer.style.display = 'inline-block';
             
-            for (let line of lines) {
-                line = line.trim();
-                if (line.startsWith('#EXTINF')) {
-                    const splitIndex = line.indexOf(',');
-                    if (splitIndex !== -1) {
-                        currentName = line.substring(splitIndex + 1).trim();
-                    }
-                } else if (line.startsWith('http')) {
-                    stations.push({ name: currentName, url: line });
-                }
-            }
-            return stations;
-        }
+            ringAudio.play().catch(e => console.error("Error playing ringtone:", e));
+            isRinging = true;
 
-        // 4. Load the external .m3u file dynamically
-        // IMPORTANT: Make sure 'playlist.m3u' is uploaded to the same folder as this HTML file!
-        fetch('playlist.m3u')
-            .then(response => response.text())
-            .then(data => {
-                stationsList = parseM3U(data);
-                console.log("Playlist loaded! Found " + stationsList.length + " stations.");
-            })
-            .catch(error => {
-                console.error("Could not load playlist.m3u", error);
-            });
-
-        // 5. Trigger on Website Load
-        window.addEventListener('load', () => {
-            // Open the door immediately
-            door.classList.add('open');
-            
-            // Attempt to play the ringtone immediately
-            ringSound.play().catch(e => {
-                console.log("Browser blocked autoplay. User must click to enable audio.");
-            });
+            // Pre-fetch the playlist while the phone rings
+            fetchPlaylist();
         });
 
-        // 6. Answering the Phone
-        const telephone = document.getElementById('telephone');
-        const nowPlaying = document.getElementById('now-playing');
+        // 2. User clicks handset -> Stop ringing, play random station
+        handset.addEventListener('click', () => {
+            if (isRinging) {
+                ringAudio.pause();
+                ringAudio.currentTime = 0;
+                isRinging = false;
+                playRandomStation();
+            } else {
+                // Optional: If already listening, clicking again could change the station
+                playRandomStation();
+            }
+        });
 
-        telephone.addEventListener('click', () => {
-            if (stationsList.length === 0) {
-                alert("Playlist is empty or hasn't loaded yet! Check your playlist.m3u file.");
+        // Fetch and parse the .m3u file
+        async function fetchPlaylist() {
+            try {
+                const response = await fetch(PLAYLIST_FILE);
+                if (!response.ok) throw new Error('Playlist not found');
+                const text = await response.text();
+                
+                // Parse out valid URLs (ignoring # comments and empty lines)
+                stationUrls = text.split('\n')
+                                  .map(line => line.trim())
+                                  .filter(line => line.length > 0 && !line.startsWith('#'));
+                
+            } catch (error) {
+                console.error("Could not load playlist:", error);
+                alert("Please ensure your .m3u playlist is in the same folder and served via a local web server.");
+            }
+        }
+
+        // Select a random station and play it
+        function playRandomStation() {
+            if (stationUrls.length === 0) {
+                console.warn("No stations found in playlist.");
                 return;
             }
-
-            // Stop ringing
-            ringSound.pause();
-            ringSound.currentTime = 0;
-
-            // Pick a random station
-            const randomIndex = Math.floor(Math.random() * stationsList.length);
-            const selectedStation = stationsList[randomIndex];
-
-            // Play the radio stream
-            radioStream.src = selectedStation.url;
-            radioStream.play();
-
-            // Update UI
-            nowPlaying.innerText = "🔊 Now Playing: " + selectedStation.name;
-            nowPlaying.style.display = 'block';
-        });
+            
+            const randomIndex = Math.floor(Math.random() * stationUrls.length);
+            const selectedUrl = stationUrls[randomIndex];
+            
+            stationAudio.src = selectedUrl;
+            stationAudio.play().catch(e => console.error("Error playing station:", e));
+            console.log("Playing station:", selectedUrl);
+        }
     </script>
 </body>
 </html>
